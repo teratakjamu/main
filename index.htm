@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Akan Datang: Teratak Jamu</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Playfair Display (for elegance/classic) and Montserrat (for modern/clean) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif; /* Default body font for modern feel */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent scroll */
+            /* Subtle sepia filter for an aged, classic paper feel */
+            filter: sepia(3%);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif; /* Playfair Display for headings */
+        }
+
+        /* Subtle fade-in animation for overall content */
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-content {
+            animation: fade-in 1.2s ease-out forwards; /* Slightly longer fade for elegance */
+        }
+
+        /* Button shadow and hover effects */
+        .button-shadow {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08); /* More pronounced but clean shadow */
+        }
+        .button-hover:hover {
+            transform: scale(1.05); /* Slightly more pronounced scale on hover for buttons */
+        }
+    </style>
+</head>
+<body class="bg-stone-50 min-h-screen flex flex-col items-center justify-center p-4 text-stone-800">
+
+    <div id="root" class="w-full max-w-xl mx-auto flex-grow flex items-center justify-center fade-in-content">
+        <!-- React app will be rendered here -->
+    </div>
+
+    <!-- React and ReactDOM CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+
+    <script type="text/babel">
+        const App = () => {
+            return (
+                <div className="flex flex-col items-center justify-center text-center p-8">
+                    <h1 className="text-6xl md:text-8xl font-bold mb-4 text-stone-900">
+                        AKAN DATANG
+                    </h1>
+                    <p className="text-3xl md:text-5xl font-semibold mb-8 text-stone-700">
+                        TERATAK JAMU
+                    </p>
+                    <p className="text-lg md:text-xl text-stone-600 max-w-prose leading-relaxed mb-10">
+                        Persiapkan diri anda untuk pengalaman kesihatan tradisional yang diperbaharui.
+                        Kami sedang menyiapkan sesuatu yang istimewa, asli, dan premium untuk anda.
+                    </p>
+
+                    <div className="space-y-4 w-full max-w-xs">
+                        <a
+                            href="https://wa.me/60136406474?text=Halo%20Teratak%20Jamu%2C%20saya%20berminat%20dengan%20produk%20anda!"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-bold text-lg rounded-full shadow-md hover:bg-green-700 transform hover:scale-105 transition duration-300 ease-in-out button-hover button-shadow w-full"
+                        >
+                            <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.6-3.807-1.6-5.87 0-6.592 5.306-11.97 11.856-11.97 3.242 0 6.301 1.256 8.653 3.537 2.353 2.28 3.567 5.236 3.567 8.232 0 6.592-5.306 11.97-11.856 11.97-1.954 0-3.876-.566-5.538-1.616l-6.02 1.661zm11.856-23.364c-5.822 0-10.536 4.67-10.536 10.457 0 1.955.578 3.843 1.638 5.485l-1.04 3.821 3.916-1.026c1.554.957 3.327 1.464 5.146 1.464 5.822 0 10.536-4.67 10.536-10.457s-4.714-10.457-10.536-10.457zm5.283 7.648c-.287-.13-.757-.369-.877-.41s-.205-.13-.29-.13c-.09 0-.23.034-.36.164-.13.13-.503.486-.615.584-.11.099-.22.13-.404.045-.184-.084-.775-.285-1.478-.91-.54-.485-.904-.812-1.015-1.002-.112-.19-.012-.175.083-.277.087-.099.199-.258.267-.387.069-.129.092-.22.066-.41s-.1-.387-.045-.584c.056-.196.3-.486.409-.645.112-.159.155-.275.23-.41.077-.135.039-.255-.02-.37-.06-.115-.29-.275-.745-.6-.454-.325-.879-.475-1.229-.475-.35 0-.64.034-1.024.13-.385.097-1.004.409-1.459.834-.45.427-.72.824-.875 1.404-.15.58-.02 1.107.399 1.794.399.687.765 1.399 1.545 2.124 1.05.999 1.928 1.349 2.628 1.879.314.237.575.427.766.566.29.213.467.29.636.255.17-.035.5-.213 1.01-.693.51-.48.835-.91 1.01-.122.175.786.175 1.455.175z"/>
+                            </svg>
+                            Hubungi Kami
+                        </a>
+                        
+                        <p className="text-sm text-stone-500 mt-4 mb-2">
+                            Atau, semak kesediaan badan anda untuk berikhtiar hamil:
+                        </p>
+
+                        <a
+                            href="https://teratakjamu.github.io/kuiz/" 
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-bold text-lg rounded-full shadow-md hover:bg-blue-700 transform hover:scale-105 transition duration-300 ease-in-out button-hover button-shadow w-full"
+                        >
+                            <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z"/>
+                            </svg>
+                            Ambil Kuiz Kesediaan Badan
+                        </a>
+
+                        <p className="text-sm text-stone-500 mt-4">
+                            Dapatkan kemas kini eksklusif tentang pelancaran kami!
+                        </p>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the App component into the 'root' div
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+    <footer class="mt-8 text-center text-stone-600 text-sm p-4">
+        Laman ini disediakan oleh Teratak Jamu @ 2025
+    </footer>
+</body>
+</html>
