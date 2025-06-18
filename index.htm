@@ -3,47 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Akan Datang: Teratak Jamu</title>
+    <title>Kuiz: Adakah Badan Anda Bersedia Untuk Menimang Cahaya Mata?</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts - Playfair Display (for elegance/classic) and Montserrat (for modern/clean) -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Montserrat', sans-serif; /* Default body font for modern feel */
+            font-family: 'Inter', sans-serif;
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            overflow: hidden; /* Prevent scroll */
-            /* Subtle sepia filter for an aged, classic paper feel */
-            filter: sepia(3%);
         }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Playfair Display', serif; /* Playfair Display for headings */
-        }
-
-        /* Subtle fade-in animation for overall content */
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in-content {
-            animation: fade-in 1.2s ease-out forwards; /* Slightly longer fade for elegance */
-        }
-
-        /* Button shadow and hover effects */
+        /* Custom styles for smoother transitions */
         .button-shadow {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.08); /* More pronounced but clean shadow */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
         }
         .button-hover:hover {
-            transform: scale(1.05); /* Slightly more pronounced scale on hover for buttons */
+            transform: scale(1.02); /* Slightly less aggressive scale for general buttons */
         }
     </style>
 </head>
-<body class="bg-stone-50 min-h-screen flex flex-col items-center justify-center p-4 text-stone-800">
+<body class="bg-gradient-to-br from-blue-100 to-purple-100 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <div id="root" class="w-full max-w-xl mx-auto flex-grow flex items-center justify-center fade-in-content">
+    <div id="root" class="w-full max-w-md mx-auto flex-grow">
         <!-- React app will be rendered here -->
     </div>
 
@@ -54,62 +37,460 @@
 
 
     <script type="text/babel">
+        // Main App component
         const App = () => {
+          const [gender, setGender] = React.useState(null); // 'male' or 'female'
+          const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
+          const [answers, setAnswers] = React.useState({});
+          const [showResult, setShowResult] = React.useState(false);
+          
+          // Define questions for female
+          const femaleQuestions = [
+            {
+              id: 'female_q1',
+              question: 'Berapakah umur anda?',
+              options: [
+                { text: 'Bawah 25 tahun', value: 'A' },
+                { text: '25-34 tahun', value: 'B' },
+                { text: '35-39 tahun', value: 'C' },
+                { text: '40 tahun ke atas', value: 'D' },
+              ],
+            },
+            {
+              id: 'female_q2',
+              question: 'Kitaran Haid Anda:',
+              options: [
+                { text: 'Sangat teratur (setiap 21-35 hari)', value: 'A' },
+                { text: 'Agak teratur tetapi ada sedikit variasi', value: 'B' },
+                { text: 'Tidak teratur atau jarang datang', value: 'C' },
+                { text: 'Tiada haid', value: 'D' },
+              ],
+            },
+            {
+              id: 'female_q3',
+              question: 'Berat Badan Anda:',
+              options: [
+                { text: 'Dalam julat BMI yang sihat (18.5-24.9)', value: 'A' },
+                { text: 'Kurang berat badan', value: 'B' },
+                { text: 'Berat badan berlebihan', value: 'C' },
+                { text: 'Obes', value: 'D' },
+              ],
+            },
+            {
+              id: 'female_q4',
+              question: 'Pengambilan Asid Folik:',
+              options: [
+                { text: 'Saya mengambil suplemen asid folik setiap hari sekurang-kurangnya 3 bulan sebelum merancang hamil.', value: 'A' },
+                { text: 'Saya mengambil asid folik tetapi tidak setiap hari atau tidak cukup lama.', value: 'B' },
+                { text: 'Saya tidak mengambil asid folik.', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q5',
+              question: 'Tahap Tekanan (Stres) Anda:',
+              options: [
+                { text: 'Saya dapat menguruskan tekanan dengan baik dan jarang merasa tertekan.', value: 'A' },
+                { text: 'Saya kadang-kadang merasa tertekan tetapi dapat mengatasinya.', value: 'B' },
+                { text: 'Saya sering merasa tertekan dan sukar untuk menguruskannya.', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q6',
+              question: 'Tabiat Pemakanan Anda:',
+              options: [
+                { text: 'Saya mengamalkan diet yang seimbang dan sihat (banyak buah, sayur, bijirin penuh).', value: 'A' },
+                { text: 'Saya cuba makan sihat tetapi kadang-kadang tersasar.', value: 'B' },
+                { text: 'Pemakanan saya kurang sihat (banyak makanan segera, bergula).', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q7',
+              question: 'Tabiat Merokok/Vape:',
+              options: [
+                { text: 'Saya tidak merokok atau vape.', value: 'A' },
+                { text: 'Saya pernah merokok/vape tetapi telah berhenti.', value: 'B' },
+                { text: 'Saya masih merokok atau vape.', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q8',
+              question: 'Pengambilan Alkohol:',
+              options: [
+                { text: 'Saya tidak mengambil alkohol sama sekali.', value: 'A' },
+                { text: 'Saya mengambil alkohol sesekali tetapi dalam kuantiti yang sangat sedikit.', value: 'B' },
+                { text: 'Saya kerap mengambil alkohol.', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q9',
+              question: 'Tahap Aktiviti Fizikal:',
+              options: [
+                { text: 'Saya aktif secara fizikal (bersenam sekurang-kurangnya 30 minit, 3-5 kali seminggu).', value: 'A' },
+                { text: 'Saya aktif tetapi tidak konsisten.', value: 'B' },
+                { text: 'Saya kurang aktif secara fizikal.', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q10',
+              question: 'Sejarah Penyakit Kronik (contoh: diabetes, tiroid, PCOS):',
+              options: [
+                { text: 'Saya tiada penyakit kronik yang didiagnosis.', value: 'A' },
+                { text: 'Saya ada penyakit kronik tetapi terkawal dengan baik melalui rawatan.', value: 'B' },
+                { text: 'Saya ada penyakit kronik yang belum terkawal atau tidak dirawat.', value: 'C' },
+              ],
+            },
+            {
+              id: 'female_q11',
+              question: 'Kesihatan Gigi dan Mulut:',
+              options: [
+                { text: 'Saya menjaga kebersihan gigi dan mulut dengan baik dan kerap berjumpa doktor gigi.', value: 'A' },
+                { text: 'Saya menjaga kebersihan tetapi tidak kerap berjumpa doktor gigi.', value: 'B' },
+                { text: 'Saya kurang memberi perhatian kepada kesihatan gigi dan mulut.', value: 'C' },
+              ],
+            },
+          ];
+
+          // Define questions for male
+          const maleQuestions = [
+            {
+              id: 'male_q1',
+              question: 'Berapakah umur anda?',
+              options: [
+                { text: 'Bawah 25 tahun', value: 'A' },
+                { text: '25-34 tahun', value: 'B' },
+                { text: '35-39 tahun', value: 'C' },
+                { text: '40 tahun ke atas', value: 'D' },
+              ],
+            },
+            {
+              id: 'male_q2',
+              question: 'Tabiat Merokok/Vape:',
+              options: [
+                { text: 'Saya tidak merokok atau vape.', value: 'A' },
+                { text: 'Saya pernah merokok/vape tetapi telah berhenti.', value: 'B' },
+                { text: 'Saya masih merokok atau vape.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q3',
+              question: 'Pengambilan Alkohol:',
+              options: [
+                { text: 'Saya tidak mengambil alkohol sama sekali.', value: 'A' },
+                { text: 'Saya mengambil alkohol sesekali tetapi dalam kuantiti yang sederhana.', value: 'B' },
+                { text: 'Saya kerap mengambil alkohol.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q4',
+              question: 'Tahap Tekanan (Stres) Anda:',
+              options: [
+                { text: 'Saya dapat menguruskan tekanan dengan baik dan jarang merasa tertekan.', value: 'A' },
+                { text: 'Saya kadang-kadang merasa tertekan tetapi dapat mengatasinya.', value: 'B' },
+                { text: 'Saya sering merasa tertekan dan sukar untuk menguruskannya.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q5',
+              question: 'Berat Badan Anda:',
+              options: [
+                { text: 'Dalam julat BMI yang sihat (18.5-24.9)', value: 'A' },
+                { text: 'Kurang berat badan', value: 'B' },
+                { text: 'Berat badan berlebihan', value: 'C' },
+                { text: 'Obes', value: 'D' },
+              ],
+            },
+            {
+              id: 'male_q6',
+              question: 'Tabiat Pemakanan Anda:',
+              options: [
+                { text: 'Saya mengamalkan diet yang seimbang dan sihat (banyak buah, sayur, bijirin penuh).', value: 'A' },
+                { text: 'Saya cuba makan sihat tetapi kadang-kadang tersasar.', value: 'B' },
+                { text: 'Pemakanan saya kurang sihat (banyak makanan segera, bergula).', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q7',
+              question: 'Tahap Aktiviti Fizikal:',
+              options: [
+                { text: 'Saya aktif secara fizikal (bersenam sekurang-kurangnya 30 minit, 3-5 kali seminggu).', value: 'A' },
+                { text: 'Saya aktif tetapi tidak konsisten.', value: 'B' },
+                { text: 'Saya kurang aktif secara fizikal.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q8',
+              question: 'Pendedahan kepada Haba Tinggi (contoh: mandi air panas, sauna, kerja yang terdedah haba):',
+              options: [
+                { text: 'Saya jarang terdedah kepada haba tinggi.', value: 'A' },
+                { text: 'Saya kadang-kadang terdedah tetapi cuba mengelakkannya.', value: 'B' },
+                { text: 'Saya kerap terdedah kepada haba tinggi.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q9',
+              question: 'Penggunaan Seluar Dalam Ketat:',
+              options: [
+                { text: 'Saya mengelak memakai seluar dalam yang terlalu ketat.', value: 'A' },
+                { text: 'Saya kadang-kadang memakai tetapi tidak selalu.', value: 'B' },
+                { text: 'Saya kerap memakai seluar dalam yang ketat.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q10',
+              question: 'Sejarah Penyakit Kronik atau Masalah Reproduktif (contoh: diabetes, penyakit tiroid, masalah buah zakar):',
+              options: [
+                { text: 'Saya tiada penyakit kronik atau masalah reproduktif yang didiagnosis.', value: 'A' },
+                { text: 'Saya ada penyakit kronik tetapi terkawal dengan baik.', value: 'B' },
+                { text: 'Saya ada penyakit kronik/masalah reproduktif yang belum terkawal atau tidak dirawat.', value: 'C' },
+              ],
+            },
+            {
+              id: 'male_q11',
+              question: 'Pendedahan kepada Bahan Kimia Berbahaya/Pencemaran:',
+              options: [
+                { text: 'Saya tidak terdedah kepada bahan kimia berbahaya.', value: 'A' },
+                { text: 'Saya kadang-kadang terdedah tetapi mengambil langkah perlindungan.', value: 'B' },
+                { text: 'Saya kerap terdedah kepada bahan kimia berbahaya di tempat kerja atau persekitaran.', value: 'C' },
+              ],
+            },
+          ];
+
+          const currentQuestions = gender === 'female' ? femaleQuestions : maleQuestions;
+          const totalQuestions = currentQuestions.length;
+
+          // Handle selection of gender
+          const handleGenderSelect = (selectedGender) => {
+            setGender(selectedGender);
+            setCurrentQuestionIndex(0); // Reset for new quiz
+            setAnswers({}); // Clear previous answers
+            setShowResult(false); // Hide result
+          };
+
+          // Handle user's answer to a question
+          const handleAnswer = (questionId, value) => {
+            setAnswers((prevAnswers) => ({
+              ...prevAnswers,
+              [questionId]: value,
+            }));
+          };
+
+          // Move to the next question or show results
+          const nextQuestion = () => {
+            if (currentQuestionIndex < totalQuestions - 1) {
+              setCurrentQuestionIndex(currentQuestionIndex + 1);
+            } else {
+              setShowResult(true); // All questions answered, show results
+            }
+          };
+
+          // Calculate the quiz result based on answers
+          const calculateResult = () => {
+            let totalScore = 0;
+            let consultationMessage = '';
+
+            // Scoring logic: A = 3 points, B = 2 points, C/D = 1 point
+            const calculateScoreValue = (answerValue) => {
+              if (answerValue === 'A') return 3;
+              if (answerValue === 'B') return 2;
+              return 1; // For C and D
+            };
+
+            // Evaluate answers to get total score
+            Object.keys(answers).forEach((questionId) => {
+              totalScore += calculateScoreValue(answers[questionId]);
+            });
+
+            // Calculate percentage
+            const maxScore = totalQuestions * 3;
+            const percentageScore = ((totalScore / maxScore) * 100).toFixed(0); // Round to nearest whole number
+
+            // Determine consultation message based on score ranges
+            if (totalScore >= 27) { // 80% ke atas (27-33)
+                consultationMessage = (
+                  <>
+                    <h3 className="text-xl font-semibold text-green-700 mb-2">Tahniah, Kesediaan Badan Anda Cemerlang!</h3>
+                    <p className="mb-4">
+                      Dengan skor kesediaan yang tinggi, anda menunjukkan persediaan fizikal yang sangat baik untuk hamil. Kitaran haid yang teratur, gaya hidup aktif, pemakanan seimbang, dan pengambilan asid folik yang konsisten adalah kunci kejayaan anda. Teruskan amalan gaya hidup sihat ini. Jika anda belum berbuat demikian, pertimbangkan untuk berbincang dengan doktor anda untuk pemeriksaan pra-kehamilan yang lengkap bagi memastikan segalanya berjalan lancar.
+                    </p>
+                  </>
+                );
+            } else if (totalScore >= 20 && totalScore <= 26) { // 60% - 79% (20-26)
+                consultationMessage = (
+                  <>
+                    <h3 className="text-xl font-semibold text-yellow-700 mb-2">Kesediaan Badan Anda di Tahap Baik!</h3>
+                    <p className="mb-4">
+                      Skor kesediaan anda menunjukkan tahap yang baik, namun ada ruang untuk penambahbaikan yang boleh membantu meningkatkan potensi kehamilan. Mungkin ada beberapa aspek seperti pengurusan stres atau konsistensi dalam pengambilan suplemen yang boleh dipertingkatkan. **Fokus pada gaya hidup sihat secara menyeluruh, dan sebagai alternatif, anda boleh pertimbangkan untuk berikhtiar dengan produk kami iaitu Teh Uncang Buah Zuriat, produk 100% natural untuk meningkatkan potensi kehamilan.** Berundinglah dengan doktor untuk nasihat lanjut dan pelan tindakan yang lebih sesuai untuk anda.
+                    </p>
+                  </>
+                );
+            } else { // Bawah 60% (11-19)
+                consultationMessage = (
+                  <>
+                    <h3 className="text-xl font-semibold text-red-700 mb-2">Perhatian Diperlukan untuk Kesediaan Badan Anda!</h3>
+                    <p className="mb-4">
+                      Berdasarkan skor anda, terdapat beberapa faktor penting yang mungkin mempengaruhi kesuburan anda yang memerlukan perhatian segera. Ini mungkin termasuk isu kitaran haid yang tidak teratur, masalah berat badan, atau tabiat gaya hidup seperti merokok/vape dan pengambilan alkohol. Adalah sangat disyorkan agar anda **berjumpa dengan doktor atau pakar kesuburan secepat mungkin** untuk penilaian menyeluruh. Mereka boleh membantu mengenal pasti punca dan menawarkan pelan rawatan terbaik. **Sebagai alternatif, anda boleh cuba berikhtiar dengan produk kami iaitu Teh Uncang Buah Zuriat, produk 100% natural untuk meningkatkan potensi kehamilan.**
+                    </p>
+                  </>
+                );
+            }
+
+            return { totalScore, percentageScore, consultationMessage, maxScore };
+          };
+
+          // Component to display a single question
+          const Question = ({ question, options, onAnswer, currentAnswer, questionNumber, totalQuestions }) => {
             return (
-                <div className="flex flex-col items-center justify-center text-center p-8">
-                    <h1 className="text-6xl md:text-8xl font-bold mb-4 text-stone-900">
-                        AKAN DATANG
-                    </h1>
-                    <p className="text-3xl md:text-5xl font-semibold mb-8 text-stone-700">
-                        TERATAK JAMU
-                    </p>
-                    <p className="text-lg md:text-xl text-stone-600 max-w-prose leading-relaxed mb-10">
-                        Persiapkan diri anda untuk pengalaman kesihatan tradisional yang diperbaharui.
-                        Kami sedang menyiapkan sesuatu yang istimewa, asli, dan premium untuk anda.
-                    </p>
-
-                    <div className="space-y-4 w-full max-w-xs">
-                        <a
-                            href="https://wa.me/60136406474?text=Halo%20Teratak%20Jamu%2C%20saya%20berminat%20dengan%20produk%20anda!"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center px-8 py-4 bg-green-600 text-white font-bold text-lg rounded-full shadow-md hover:bg-green-700 transform hover:scale-105 transition duration-300 ease-in-out button-hover button-shadow w-full"
-                        >
-                            <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.6-3.807-1.6-5.87 0-6.592 5.306-11.97 11.856-11.97 3.242 0 6.301 1.256 8.653 3.537 2.353 2.28 3.567 5.236 3.567 8.232 0 6.592-5.306 11.97-11.856 11.97-1.954 0-3.876-.566-5.538-1.616l-6.02 1.661zm11.856-23.364c-5.822 0-10.536 4.67-10.536 10.457 0 1.955.578 3.843 1.638 5.485l-1.04 3.821 3.916-1.026c1.554.957 3.327 1.464 5.146 1.464 5.822 0 10.536-4.67 10.536-10.457s-4.714-10.457-10.536-10.457zm5.283 7.648c-.287-.13-.757-.369-.877-.41s-.205-.13-.29-.13c-.09 0-.23.034-.36.164-.13.13-.503.486-.615.584-.11.099-.22.13-.404.045-.184-.084-.775-.285-1.478-.91-.54-.485-.904-.812-1.015-1.002-.112-.19-.012-.175.083-.277.087-.099.199-.258.267-.387.069-.129.092-.22.066-.41s-.1-.387-.045-.584c.056-.196.3-.486.409-.645.112-.159.155-.275.23-.41.077-.135.039-.255-.02-.37-.06-.115-.29-.275-.745-.6-.454-.325-.879-.475-1.229-.475-.35 0-.64.034-1.024.13-.385.097-1.004.409-1.459.834-.45.427-.72.824-.875 1.404-.15.58-.02 1.107.399 1.794.399.687.765 1.399 1.545 2.124 1.05.999 1.928 1.349 2.628 1.879.314.237.575.427.766.566.29.213.467.29.636.255.17-.035.5-.213 1.01-.693.51-.48.835-.91 1.01-.122.175.786.175 1.455.175z"/>
-                            </svg>
-                            Hubungi Kami
-                        </a>
-                        
-                        <p className="text-sm text-stone-500 mt-4 mb-2">
-                            Atau, semak kesediaan badan anda untuk berikhtiar hamil:
-                        </p>
-
-                        <a
-                            href="https://teratakjamu.github.io/kuiz/" 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-bold text-lg rounded-full shadow-md hover:bg-blue-700 transform hover:scale-105 transition duration-300 ease-in-out button-hover button-shadow w-full"
-                        >
-                            <svg className="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z"/>
-                            </svg>
-                            Ambil Kuiz Kesediaan Badan
-                        </a>
-
-                        <p className="text-sm text-stone-500 mt-4">
-                            Dapatkan kemas kini eksklusif tentang pelancaran kami!
-                        </p>
-                    </div>
+              <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md mx-auto">
+                <div className="text-sm text-gray-500 mb-4 text-center">
+                  Soalan {questionNumber} / {totalQuestions}
                 </div>
+                <h2 className="text-xl font-semibold text-gray-800 mb-6 text-center">{question}</h2>
+                <div className="flex flex-col space-y-3">
+                  {options.map((option) => (
+                    <button
+                      key={option.value}
+                      className={`py-3 px-4 rounded-lg text-left transition-all duration-200 ease-in-out
+                        ${currentAnswer === option.value
+                          ? 'bg-blue-600 text-white shadow-md'
+                          : 'bg-blue-100 text-blue-800 hover:bg-blue-200 hover:shadow-sm'
+                        } button-hover`}
+                      onClick={() => onAnswer(option.value)}
+                    >
+                      <span className="font-medium mr-2">({option.value})</span> {option.text}
+                    </button>
+                  ))}
+                </div>
+              </div>
             );
+          };
+
+          // Component to display quiz results
+          const Result = ({ gender, onRestart, answers }) => {
+            const { totalScore, percentageScore, consultationMessage, maxScore } = calculateResult();
+
+            const whatsappPretext = `Saya dah jawab kuiz dan nak cuba berikhtiar dgn Teh Uncang Buah Zuriat. Skor kesediaan saya adalah ${totalScore}/${maxScore} (${percentageScore}%).`;
+            const whatsappLink = `https://wa.me/60136406474?text=${encodeURIComponent(whatsappPretext)}`;
+            
+            return (
+              <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md mx-auto text-center">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Hasil Kuiz Anda</h2>
+                
+                {/* Score display */}
+                <div className="flex flex-col items-center justify-center mb-6">
+                  <div className="text-lg font-semibold text-gray-700 mb-2">
+                    Skor Kesediaan Badan Anda: {totalScore} / {maxScore}
+                  </div>
+                  <div className="bg-blue-600 text-white text-4xl font-bold px-6 py-3 rounded-full shadow-lg border-4 border-blue-300">
+                    {percentageScore}%
+                  </div>
+                </div>
+
+                <div className="text-gray-700 text-left mb-6">
+                  {consultationMessage}
+                </div>
+                <p className="text-sm text-gray-600 mb-6">
+                  Peringatan penting: Kuiz ini adalah alat saringan awal sahaja dan{' '}
+                  <strong className="text-gray-800">bukan diagnosis perubatan</strong>. Untuk nasihat dan penilaian kesuburan yang tepat, sila{' '}
+                  <strong className="text-gray-800">berunding dengan doktor atau pakar kesuburan</strong> anda.
+                </p>
+
+                {/* Butang WhatsApp sahaja */}
+                <a
+                  href={whatsappLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 button-shadow w-full"
+                >
+                  <svg className="inline-block w-5 h-5 mr-2 -mt-0.5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.6-3.807-1.6-5.87 0-6.592 5.306-11.97 11.856-11.97 3.242 0 6.301 1.256 8.653 3.537 2.353 2.28 3.567 5.236 3.567 8.232 0 6.592-5.306 11.97-11.856 11.97-1.954 0-3.876-.566-5.538-1.616l-6.02 1.661zm11.856-23.364c-5.822 0-10.536 4.67-10.536 10.457 0 1.955.578 3.843 1.638 5.485l-1.04 3.821 3.916-1.026c1.554.957 3.327 1.464 5.146 1.464 5.822 0 10.536-4.67 10.536-10.457s-4.714-10.457-10.536-10.457zm5.283 7.648c-.287-.13-.757-.369-.877-.41s-.205-.13-.29-.13c-.09 0-.23.034-.36.164-.13.13-.503.486-.615.584-.11.099-.22.13-.404.045-.184-.084-.775-.285-1.478-.91-.54-.485-.904-.812-1.015-1.002-.112-.19-.012-.175.083-.277.087-.099.199-.258.267-.387.069-.129.092-.22.066-.41s-.1-.387-.045-.584c.056-.196.3-.486.409-.645.112-.159.155-.275.23-.41.077-.135.039-.255-.02-.37-.06-.115-.29-.275-.745-.6-.454-.325-.879-.475-1.229-.475-.35 0-.64.034-1.024.13-.385.097-1.004.409-1.459.834-.45.427-.72.824-.875 1.404-.15.58-.02 1.107.399 1.794.399.687.765 1.399 1.545 2.124 1.05.999 1.928 1.349 2.628 1.879.314.237.575.427.766.566.29.213.467.29.636.255.17-.035.5-.213 1.01-.693.51-.48.835-.91 1.01-.122.175.786.175 1.455.175z"/>
+                  </svg>
+                  Dapatkan Khidmat Nasihat & Produk Ikhtiar Hamil
+                </a>
+                <button
+                  onClick={onRestart}
+                  className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+                >
+                  Mula Kuiz Semula
+                </button>
+              </div>
+            );
+          };
+
+          // Render the App component into the 'root' div
+          return (
+            <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-100 flex flex-col items-center justify-center p-4 font-inter">
+              {/* This style is already in the <head> but kept here for React component isolation if needed */}
+              <style>{`body { font-family: 'Inter', sans-serif; }`}</style>
+
+              {!gender ? (
+                // Gender selection screen
+                <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md mx-auto text-center">
+                  <h1 className="text-3xl font-bold text-gray-800 mb-6">
+                    Kuiz: Adakah Badan Anda Bersedia Untuk Menimang Cahaya Mata?
+                  </h1>
+                  <p className="text-gray-600 mb-8">
+                    Kuiz ini direka khas untuk pasangan yang sedang berusaha untuk hamil. Jawapan anda akan membantu kami memberikan panduan awal mengenai kesediaan fizikal anda.
+                  </p>
+                  <div className="flex flex-col space-y-4">
+                    <button
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 button-shadow"
+                      onClick={() => handleGenderSelect('female')}
+                    >
+                      Saya Seorang Wanita
+                    </button>
+                    <button
+                      className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 button-shadow"
+                      onClick={() => handleGenderSelect('male')}
+                    >
+                      Saya Seorang Lelaki
+                    </button>
+                  </div>
+                </div>
+              ) : showResult ? (
+                // Show quiz results
+                <Result
+                  gender={gender}
+                  answers={answers} // Pass answers to Result component for score calculation
+                  consultationMessage={calculateResult().consultationMessage} // Pass only the message from here
+                  onRestart={() => {
+                    setGender(null);
+                    setCurrentQuestionIndex(0);
+                    setAnswers({});
+                    setShowResult(false);
+                  }}
+                />
+              ) : (
+                // Show current question
+                <div className="w-full max-w-md">
+                  <Question
+                    question={currentQuestions[currentQuestionIndex].question}
+                    options={currentQuestions[currentQuestionIndex].options}
+                    onAnswer={(value) => handleAnswer(currentQuestions[currentQuestionIndex].id, value)}
+                    currentAnswer={answers[currentQuestions[currentQuestionIndex].id]}
+                    questionNumber={currentQuestionIndex + 1}
+                    totalQuestions={totalQuestions}
+                  />
+                  <div className="flex justify-center mt-6">
+                    {answers[currentQuestions[currentQuestionIndex].id] && ( // Only show next button if an answer is selected
+                      <button
+                        onClick={nextQuestion}
+                        className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 button-shadow"
+                      >
+                        {currentQuestionIndex < totalQuestions - 1 ? 'Soalan Seterusnya' : 'Dapatkan Hasil'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
         };
 
         // Render the App component into the 'root' div
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
-    <footer class="mt-8 text-center text-stone-600 text-sm p-4">
-        Laman ini disediakan oleh Teratak Jamu @ 2025
+    <footer class="mt-8 text-center text-gray-600 text-sm p-4">
+        Laman kuiz ini disediakan oleh Teratak Jamu @ 2025
     </footer>
 </body>
 </html>
